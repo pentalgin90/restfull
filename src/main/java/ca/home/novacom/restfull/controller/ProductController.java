@@ -3,12 +3,10 @@ package ca.home.novacom.restfull.controller;
 import ca.home.novacom.restfull.domain.Product;
 import ca.home.novacom.restfull.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,8 +25,24 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProducts() {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
+
     @GetMapping("{id}")
-    public ResponseEntity<Product> getOneProduct(@PathVariable Long id){
+    public ResponseEntity<Product> getOneProduct(@PathVariable Long id) {
         return new ResponseEntity<>(productService.getOneProduct(id), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Product> createProduct(@RequestBody Product product){
+        return new ResponseEntity<>(productService.createProduct(product), HttpStatus.CREATED);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable Long id){
+        return new ResponseEntity<>(productService.updateProduct(product, id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public HttpStatus deleteProduct(@PathVariable Long id){
+        return productService.deleteProduct(id);
     }
 }
