@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
@@ -41,5 +42,15 @@ public class ControllerProductTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/product")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2))).andDo(print());
+    }
+
+    @Test
+    void getOneProduct() throws Exception {
+        Product product = new Product("name1", 29.99, "description1");
+        when(productService.getOneProduct(1l)).thenReturn(product);
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }

@@ -12,4 +12,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getAllProducts() {
         return new ArrayList<>();
     }
+
+    @Override
+    public Product getOneProduct(Long id) {
+        return new Product();
+    }
 }
