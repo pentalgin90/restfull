@@ -1,5 +1,6 @@
 package ca.home.novacom.restfull.utils;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class ProductSpec implements Specification {
 
@@ -20,6 +22,10 @@ public class ProductSpec implements Specification {
 
     public void addFilter(FilterProduct filter) {
         filters.add(filter);
+    }
+
+    public void addListFilter(List<FilterProduct> filters) {
+        filters.forEach(filter -> addFilter(filter));
     }
 
 
