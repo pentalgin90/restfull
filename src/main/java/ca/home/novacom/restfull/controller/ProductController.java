@@ -1,6 +1,7 @@
 package ca.home.novacom.restfull.controller;
 
 import ca.home.novacom.restfull.domain.Product;
+import ca.home.novacom.restfull.domain.User;
 import ca.home.novacom.restfull.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -49,5 +51,12 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<List<Product>> universalSearch(@RequestParam(name = "filter", required = true) String condition){
         return new ResponseEntity<>(productService.universalSearch(condition), HttpStatus.OK);
+    }
+
+    @PostMapping("/buy/{id}")
+    public HttpStatus addBasket(@RequestBody List<Product> listProduct){
+        User user = new User("dmitrii", "dmitrii@dmitrii.com", LocalDateTime.now());
+        // TODO if will be autorisation, User will be from autorisation
+        return productService.addToBasket(user, listProduct);
     }
 }

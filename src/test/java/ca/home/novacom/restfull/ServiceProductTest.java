@@ -1,19 +1,22 @@
 package ca.home.novacom.restfull;
 
 import ca.home.novacom.restfull.domain.Product;
+import ca.home.novacom.restfull.domain.User;
 import ca.home.novacom.restfull.exception.NotFoundException;
+import ca.home.novacom.restfull.repository.BasketRepository;
 import ca.home.novacom.restfull.repository.ProductRepository;
+import ca.home.novacom.restfull.service.BasketServiceImpl;
 import ca.home.novacom.restfull.service.ProductServiceImpl;
-import ca.home.novacom.restfull.utils.FilterProduct;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import static ca.home.novacom.restfull.utils.AnnotationHandler.getFields;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,15 +25,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ServiceProductTest {
 
     private ProductServiceImpl productService;
+    private BasketServiceImpl basketService;
     private Product product;
 
     @Autowired
     ProductRepository productRepository;
+    BasketRepository basketRepository;
 
     @BeforeEach
     void setUp() {
         product = new Product("firstProduct", 29.99, "description");
-        productService = new ProductServiceImpl(productRepository);
+        basketService = new BasketServiceImpl(basketRepository);
+        productService = new ProductServiceImpl(productRepository, basketService);
+
     }
 
     private void productComparison(Product lastProduct) {
@@ -96,5 +103,15 @@ public class ServiceProductTest {
         assertEquals(products1.size(), 2);
         List<Product> products2 = productService.universalSearch(null);
         assertEquals(products2.size(), 3);
+    }
+
+    @Test
+    void addToBasket() throws Exception {
+        List<Product> listProduct = new ArrayList<>();
+        productRepository.save(product);
+        listProduct.add(product);
+        User user = new User("dmitrii", "dmitrii@dmitrii.com", LocalDateTime.now());
+        user.setId(1l);
+        assertEquals(HttpStatus.OK, productService.addToBasket(user, listProduct));
     }
 }

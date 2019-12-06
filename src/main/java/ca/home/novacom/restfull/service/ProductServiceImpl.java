@@ -1,6 +1,8 @@
 package ca.home.novacom.restfull.service;
 
+import ca.home.novacom.restfull.domain.Basket;
 import ca.home.novacom.restfull.domain.Product;
+import ca.home.novacom.restfull.domain.User;
 import ca.home.novacom.restfull.exception.NotFoundException;
 import ca.home.novacom.restfull.repository.ProductRepository;
 import ca.home.novacom.restfull.utils.ProductSpec;
@@ -9,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ca.home.novacom.restfull.utils.AnnotationHandler.getFields;
@@ -16,9 +19,11 @@ import static ca.home.novacom.restfull.utils.AnnotationHandler.getFields;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final BasketService basketService;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, BasketService basketService) {
         this.productRepository = productRepository;
+        this.basketService = basketService;
     }
 
     @Override
@@ -61,6 +66,17 @@ public class ProductServiceImpl implements ProductService {
         } else {
             productSpec.addListFilter(getFields(Product.class, condition));
             return productRepository.findAll(productSpec);
+        }
+    }
+
+    @Override
+    public HttpStatus addToBasket(User user, List<Product> listProduct) {
+        try {
+            Basket basket = new Basket(user, LocalDateTime.now(), listProduct);
+            basketService.createBasket(basket);
+            return HttpStatus.OK;
+        } catch (RuntimeException e){
+            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }
 }

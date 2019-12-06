@@ -104,4 +104,11 @@ public class ControllerProductTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
     }
+
+    @Test
+    void buyProduct() throws Exception {
+        mockMvc.perform(post("/product/buy/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }
