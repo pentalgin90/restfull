@@ -1,20 +1,19 @@
 package ca.home.novacom.restfull;
 
 import ca.home.novacom.restfull.domain.Product;
-import ca.home.novacom.restfull.domain.User;
 import ca.home.novacom.restfull.exception.NotFoundException;
 import ca.home.novacom.restfull.repository.BasketRepository;
 import ca.home.novacom.restfull.repository.ProductRepository;
+import ca.home.novacom.restfull.repository.UserRepository;
 import ca.home.novacom.restfull.service.BasketServiceImpl;
 import ca.home.novacom.restfull.service.ProductServiceImpl;
+import ca.home.novacom.restfull.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,18 +25,20 @@ public class ServiceProductTest {
 
     private ProductServiceImpl productService;
     private BasketServiceImpl basketService;
+    private UserServiceImpl userService;
     private Product product;
 
     @Autowired
     ProductRepository productRepository;
     BasketRepository basketRepository;
+    UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
         product = new Product("firstProduct", 29.99, "description");
         basketService = new BasketServiceImpl(basketRepository);
-        productService = new ProductServiceImpl(productRepository, basketService);
-
+        userService = new UserServiceImpl(userRepository);
+        productService = new ProductServiceImpl(productRepository, basketService, userService);
     }
 
     private void productComparison(Product lastProduct) {
@@ -84,7 +85,7 @@ public class ServiceProductTest {
     }
 
     @Test
-    void deleteSpendNotFoundException(){
+    void deleteSpendNotFoundException() {
         productRepository.save(product);
         assertThrows(NotFoundException.class, () -> {
             productService.deleteProduct(4l);
@@ -103,15 +104,5 @@ public class ServiceProductTest {
         assertEquals(products1.size(), 2);
         List<Product> products2 = productService.universalSearch(null);
         assertEquals(products2.size(), 3);
-    }
-
-    @Test
-    void addToBasket() throws Exception {
-        List<Product> listProduct = new ArrayList<>();
-        productRepository.save(product);
-        listProduct.add(product);
-        User user = new User("dmitrii", "dmitrii@dmitrii.com", LocalDateTime.now());
-        user.setId(1l);
-        assertEquals(HttpStatus.OK, productService.addToBasket(user, listProduct));
     }
 }

@@ -20,10 +20,16 @@ import static ca.home.novacom.restfull.utils.AnnotationHandler.getFields;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final BasketService basketService;
+    private final UserService userService;
 
-    public ProductServiceImpl(ProductRepository productRepository, BasketService basketService) {
+    public ProductServiceImpl(
+            ProductRepository productRepository,
+            BasketService basketService,
+            UserService userService
+    ) {
         this.productRepository = productRepository;
         this.basketService = basketService;
+        this.userService = userService;
     }
 
     @Override
@@ -58,10 +64,17 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * Method return list product by a string condition
+     * if condition null empty, method return all product
+     *
+     * @param condition: type string
+     */
+
     @Override
     public List<Product> universalSearch(String condition) {
         ProductSpec productSpec = new ProductSpec();
-        if(condition == null || condition.isEmpty()){
+        if (condition == null || condition.isEmpty()) {
             return productRepository.findAll();
         } else {
             productSpec.addListFilter(getFields(Product.class, condition));
@@ -69,13 +82,18 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * Method creat new basket and add to database
+     */
+
     @Override
     public HttpStatus addToBasket(User user, List<Product> listProduct) {
         try {
+            userService.createUser(user);
             Basket basket = new Basket(user, LocalDateTime.now(), listProduct);
             basketService.createBasket(basket);
             return HttpStatus.OK;
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }
