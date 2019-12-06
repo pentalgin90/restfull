@@ -1,11 +1,9 @@
 package ca.home.novacom.restfull.service;
 
-import ca.home.novacom.restfull.utils.AnnotationHandler;
-import ca.home.novacom.restfull.utils.FilterProduct;
 import ca.home.novacom.restfull.domain.Product;
-import ca.home.novacom.restfull.utils.ProductSpec;
 import ca.home.novacom.restfull.exception.NotFoundException;
 import ca.home.novacom.restfull.repository.ProductRepository;
+import ca.home.novacom.restfull.utils.ProductSpec;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
