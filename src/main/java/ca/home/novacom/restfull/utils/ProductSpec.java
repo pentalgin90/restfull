@@ -1,6 +1,5 @@
 package ca.home.novacom.restfull.utils;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
