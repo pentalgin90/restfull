@@ -97,9 +97,9 @@ public class ControllerProductTest {
     void ubiversalProduct() throws Exception {
         List<Product> productList = new ArrayList<Product>();
         productList.add(new Product("name1", 299.99, "description1"));
-        productList.add(new Product("name2", 39.99, "description2"));
-        when(productService.getAllProducts()).thenReturn(productList);
-        mockMvc.perform(get("/pruduct/search/{word}", "name1")
+        productList.add(new Product("name2", 39.99, "name1"));
+        when(productService.universalSearch("name1")).thenReturn(productList);
+        mockMvc.perform(get("/product/search").param("filter", "name1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
