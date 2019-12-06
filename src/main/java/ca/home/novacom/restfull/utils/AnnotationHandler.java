@@ -5,15 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnnotationHandler {
-
-    public static List<FilterProduct> getFields(Class<?> entity, String condition) {
+    /**
+     * Method get type class and condition search
+     * return list ready filters with condition search
+     * and names field class
+     * list field get of reflection with annotation @
+     *
+     * @param entity     : type class entity
+     * @param condition: type string
+     */
+    public static List<ConditionSearchForProduct> getFields(Class<?> entity, String condition) {
         Field[] declaredField = entity.getDeclaredFields();
-        List<FilterProduct> filterProducts = new ArrayList<>();
+        List<ConditionSearchForProduct> conditionSearchForProducts = new ArrayList<>();
         for (Field a : declaredField) {
-            if (a.isAnnotationPresent(ConditionalForFilter.class)) {
-                filterProducts.add(new FilterProduct(a.getName(), condition));
+            if (a.isAnnotationPresent(ConditionalForSearch.class)) {
+                conditionSearchForProducts.add(new ConditionSearchForProduct(a.getName(), condition));
             }
         }
-        return filterProducts;
+        return conditionSearchForProducts;
     }
 }

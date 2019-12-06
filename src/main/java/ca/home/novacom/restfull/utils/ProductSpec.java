@@ -10,20 +10,24 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class return predicate for spring data JPA specification
+ * */
+
 @Service
 public class ProductSpec implements Specification {
 
-    private List<FilterProduct> filters;
+    private List<ConditionSearchForProduct> filters;
 
     public ProductSpec() {
         filters = new ArrayList<>();
     }
 
-    public void addFilter(FilterProduct filter) {
+    public void addFilter(ConditionSearchForProduct filter) {
         filters.add(filter);
     }
 
-    public void addListFilter(List<FilterProduct> filters) {
+    public void addListFilter(List<ConditionSearchForProduct> filters) {
         filters.forEach(filter -> addFilter(filter));
     }
 
@@ -43,7 +47,7 @@ public class ProductSpec implements Specification {
         return predicates;
     }
 
-    private Predicate buildPredicate(FilterProduct filter, Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    private Predicate buildPredicate(ConditionSearchForProduct filter, Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
         return criteriaBuilder.equal(root.get(filter.getField()), filter.getValue());
     }
 

@@ -1,7 +1,6 @@
 package ca.home.novacom.restfull.domain;
 
-import ca.home.novacom.restfull.utils.ConditionalForFilter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ca.home.novacom.restfull.utils.ConditionalForSearch;
 
 import javax.persistence.*;
 
@@ -10,10 +9,10 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ConditionalForFilter
+    @ConditionalForSearch
     private String name;
     private Double cost;
-    @ConditionalForFilter
+    @ConditionalForSearch
     private String description;
 
     public Product() {

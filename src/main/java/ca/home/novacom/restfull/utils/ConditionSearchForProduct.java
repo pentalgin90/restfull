@@ -1,11 +1,13 @@
 package ca.home.novacom.restfull.utils;
-
-public class FilterProduct {
+/**
+ * Class save object name field for entity and conditionSearch
+ * */
+public class ConditionSearchForProduct {
 
     private String field;
     private Object value;
 
-    public FilterProduct(String field, Object value) {
+    public ConditionSearchForProduct(String field, Object value) {
         this.field = field;
         this.value = value;
     }
