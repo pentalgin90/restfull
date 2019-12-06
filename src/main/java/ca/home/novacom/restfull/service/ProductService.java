@@ -11,4 +11,5 @@ public interface ProductService {
     Product createProduct(Product product);
     Product updateProduct(Product product, Long id);
     HttpStatus deleteProduct(Long id);
+    List<Product> universalSearch(String condition);
 }

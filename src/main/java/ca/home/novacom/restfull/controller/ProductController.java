@@ -45,4 +45,9 @@ public class ProductController {
     public HttpStatus deleteProduct(@PathVariable Long id){
         return productService.deleteProduct(id);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> universalSearch(@PathVariable String condition){
+        return new ResponseEntity<>(productService.universalSearch(condition), HttpStatus.OK);
+    }
 }
