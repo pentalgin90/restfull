@@ -47,7 +47,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Product>> universalSearch(@PathVariable String condition){
+    public ResponseEntity<List<Product>> universalSearch(@RequestParam(name = "filter", required = true) String condition){
         return new ResponseEntity<>(productService.universalSearch(condition), HttpStatus.OK);
     }
 }

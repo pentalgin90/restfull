@@ -1,5 +1,6 @@
 package ca.home.novacom.restfull.service;
 
+import ca.home.novacom.restfull.utils.AnnotationHandler;
 import ca.home.novacom.restfull.utils.FilterProduct;
 import ca.home.novacom.restfull.domain.Product;
 import ca.home.novacom.restfull.utils.ProductSpec;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static ca.home.novacom.restfull.utils.AnnotationHandler.getFields;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -55,9 +58,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> universalSearch(String condition) {
         ProductSpec productSpec = new ProductSpec();
-        productSpec.addFilter(new FilterProduct("name", condition));
-        productSpec.addFilter(new FilterProduct("description", "firstProduct"));
-        return productRepository.findAll(productSpec);
+        if(condition == null || condition.isEmpty()){
+            return productRepository.findAll();
+        } else {
+            productSpec.addListFilter(getFields(Product.class, condition));
+            return productRepository.findAll(productSpec);
+        }
     }
-
 }

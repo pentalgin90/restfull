@@ -4,6 +4,7 @@ import ca.home.novacom.restfull.domain.Product;
 import ca.home.novacom.restfull.exception.NotFoundException;
 import ca.home.novacom.restfull.repository.ProductRepository;
 import ca.home.novacom.restfull.service.ProductServiceImpl;
+import ca.home.novacom.restfull.utils.FilterProduct;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+import static ca.home.novacom.restfull.utils.AnnotationHandler.getFields;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -88,7 +90,9 @@ public class ServiceProductTest {
         Product product2 = new Product("secondProduct", 29.99, "firstProduct");
         productRepository.save(product1);
         productRepository.save(product2);
-        List<Product> products = productService.universalSearch("firstProduct");
-        products.forEach(x -> System.out.println(x.toString()));
+        List<Product> products1 = productService.universalSearch("firstProduct");
+        assertEquals(products1.size(), 2);
+        List<Product> products2 = productService.universalSearch(null);
+        assertEquals(products2.size(), 2);
     }
 }
