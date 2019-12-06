@@ -88,11 +88,13 @@ public class ServiceProductTest {
     void universalSearch() throws Exception {
         Product product1 = new Product("firstProduct", 29.99, "description");
         Product product2 = new Product("secondProduct", 29.99, "firstProduct");
+        Product product3 = new Product("threeProduct", 59.99, "description3");
         productRepository.save(product1);
         productRepository.save(product2);
+        productRepository.save(product3);
         List<Product> products1 = productService.universalSearch("firstProduct");
         assertEquals(products1.size(), 2);
         List<Product> products2 = productService.universalSearch(null);
-        assertEquals(products2.size(), 2);
+        assertEquals(products2.size(), 3);
     }
 }

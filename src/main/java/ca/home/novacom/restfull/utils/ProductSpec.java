@@ -45,10 +45,6 @@ public class ProductSpec implements Specification {
     }
 
     private Predicate buildPredicate(FilterProduct filter, Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        return buildEqualsPredicateToCriteria(filter, root, criteriaQuery, criteriaBuilder);
-    }
-
-    private Predicate buildEqualsPredicateToCriteria(FilterProduct filter, Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
         return criteriaBuilder.equal(root.get(filter.getField()), filter.getValue());
     }
 
